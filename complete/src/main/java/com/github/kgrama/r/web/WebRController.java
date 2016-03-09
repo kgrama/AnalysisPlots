@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.kgrama.r.objects.LabelValueImplList;
+import com.github.kgrama.r.objects.ChartTypeWithList;
 import com.github.kgrama.r.prototype.TestSVG;
 import com.github.kgrama.r.web.objects.RGreeting;
 
@@ -37,28 +37,17 @@ public class WebRController {
     	return "";
     }
     
-    @RequestMapping(value={"/jsonPieChart"}, consumes = "application/json", method=RequestMethod.POST)
+    @SuppressWarnings("unused")
+    @RequestMapping(value={"/selectGraphForValues"}, consumes = "application/json", method=RequestMethod.POST)
     @ResponseBody
-    public String jsonPieChart(@RequestBody LabelValueImplList values) {
+    public String selectGraphForValues(@RequestBody ChartTypeWithList values) {
     	try{
     		UUID sessionUUID = UUID.randomUUID();
-    		RGreeting testGreet = new RGreeting();
-    		System.out.println("Number of values: "+ values.size());
-    		return testGreet.getJSONPiePlot(sessionUUID, values);
-    	}catch (Exception e){
-    		e.printStackTrace(System.out);
-    	}
-    	return "";
-    }
-    
-    @RequestMapping(value={"/jsonBarChart"}, consumes = "application/json", method=RequestMethod.POST)
-    @ResponseBody
-    public String jsonBarChart(@RequestBody LabelValueImplList values) {
-    	try{
-    		UUID sessionUUID = UUID.randomUUID();
-    		RGreeting testGreet = new RGreeting();
-    		System.out.println("Number of values: "+ values.size());
-    		return testGreet.getJSONBarPlot(sessionUUID, values);
+			RGreeting testGreet = new RGreeting();
+    		System.out.println("Graph type: "+ values.getGraphType());
+    		System.out.println("Number of values: "+ values.getValuesAndLabels().size());
+    		return values.requestedGraph.generateGraph(values.getValuesAndLabels());
+    		
     	}catch (Exception e){
     		e.printStackTrace(System.out);
     	}
