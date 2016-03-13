@@ -1,13 +1,12 @@
 package com.github.kgrama.r.web.objects;
 
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
 import org.rosuda.JRI.Rengine;
 import org.rosuda.REngine.JRI.JRIEngine;
+
+import com.github.kgrama.r.demo.WebRDemo;
 
 public class RGreeting {
 
@@ -23,22 +22,10 @@ public class RGreeting {
 		}
     }
     
-    public String getHardcodedPlot(UUID session){
+    public String getHardcodedPlot(List<String> commandList){
     	try{
-    	r.eval("slices <- c(10, 12,4, 16, 8)");
-    	r.eval("svg('/home/evd/testsvg/1.svg')");
-    	r.eval("pie2 <- pie(slices)");
-    	r.eval("print(pie2)");
-    	r.eval("dev.off()");
-    	r.eval("rm(pie2)");
-    	r.eval("rm(slices)");
-    	}
-    	catch(Exception e){
-    		e.printStackTrace(System.out);
-    	}
-    	try{
-    		byte[] encoded = Files.readAllBytes(Paths.get("/home/evd/testsvg/1.svg"));
-    		return new String(encoded);
+    		plotFromCommandList(commandList);
+    		return WebRDemo.readDemoSVGFile();
     	}
     	catch(Exception e){
     		e.printStackTrace(System.out);
@@ -52,6 +39,12 @@ public class RGreeting {
 			System.out.println(current);
 			r.eval(current);
 		}
+	}
+
+
+	public String getHardcodedPredict(List<String> commandList) throws Exception {
+		plotFromCommandList(commandList);
+		return WebRDemo.readDemoSVGFile();
 	}
 	
 }
