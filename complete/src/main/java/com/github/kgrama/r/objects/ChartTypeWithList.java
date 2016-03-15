@@ -1,12 +1,21 @@
 package com.github.kgrama.r.objects;
 
-public class ChartTypeWithList {
+import org.springframework.hateoas.ResourceSupport;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
+
+@SuppressWarnings("unused")
+@Data
+public class ChartTypeWithList{
 	/*
 	 * {
 	 * "graphType":"abc",
 	 * "valuesAndLabels":[{"label":"abc","value":"65"}, {"label":"cde","value":"67"},{"label":"efg","value":"88"}]
 	 * }
 	 */
+	
 	public String getGraphType() {
 		return graphType;
 	}
@@ -19,6 +28,7 @@ public class ChartTypeWithList {
 			this.requestedGraph = SupportedGraphs.Unknown; 
 		}
 	}
+	
 	String graphType;
 	LabelValueImplList valuesAndLabels;
 	
@@ -29,6 +39,7 @@ public class ChartTypeWithList {
 		this.valuesAndLabels = valuesAndLabels;
 	}
 	
+	@JsonIgnore
 	public SupportedGraphs requestedGraph;
 }
 
